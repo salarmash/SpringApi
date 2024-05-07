@@ -9,7 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -22,12 +24,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookResponse save(BookRequest bookRequest) {
-
-        Book save = bookRepository.save(createdBook(bookRequest));
-        Optional<Book> byName = bookRepository.findByName(bookRequest.getName());
-        if (byName.isPresent())
-            throw new RuleExecption("Book.is.Exist");
-        return createBookResponse(save);
+        // Check if a book with the same name already exists
+        Optional<Book> existingBook = bookRepository.findByName(bookRequest.getName());
+        if (existingBook.isPresent()) {
+            throw new RuleExecption("Book already exists");
+        } else {
+            // Save the book to the repository if it doesn't already exist
+            Book savedBook = bookRepository.save(createdBook(bookRequest));
+            return createBookResponse(savedBook);
+        }
     }
 
     @Override
@@ -35,6 +40,19 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll(pageable).map((book) -> BookResponse.builder().id(book.getId())
                 .name(book.getName())
                 .price(book.getPrice()).build());
+    }
+
+    @Override
+    public List<BookResponse> findByName(String name) {
+        return bookRepository.findByNameContains(name).stream().map((book) -> BookResponse.builder().id(book.getId())
+                .name(book.getName())
+                .price(book.getPrice()).build()).collect(Collectors.toList());
+    }
+
+    @Override
+    public BookResponse findById(Long id) {
+      Book book=   bookRepository.findById(id).orElseThrow(()->new RuleExecption("book.not.found"));
+      return createBookResponse(book);
     }
 
     private Book createdBook(BookRequest bookRequest) {
