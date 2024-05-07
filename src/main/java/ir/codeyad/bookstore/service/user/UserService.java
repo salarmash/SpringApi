@@ -1,4 +1,4 @@
-package ir.codeyad.bookstore.user;
+package ir.codeyad.bookstore.service.user;
 
 import ir.codeyad.bookstore.dto.request.UserRequest;
 import ir.codeyad.bookstore.dto.response.UserResponse;

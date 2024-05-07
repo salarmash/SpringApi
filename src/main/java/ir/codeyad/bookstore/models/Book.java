@@ -2,15 +2,17 @@ package ir.codeyad.bookstore.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
 @Entity
 @Table(schema = SchemaName.schemaName)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book extends BaseEntity {
     private String name;
-    private long price;
+    private Long price;
 
 }

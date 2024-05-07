@@ -1,10 +1,11 @@
-package ir.codeyad.bookstore.user;
+package ir.codeyad.bookstore.service.user;
 
 import ir.codeyad.bookstore.dto.request.UserRequest;
 import ir.codeyad.bookstore.dto.response.UserResponse;
 import ir.codeyad.bookstore.execption.RuleExecption;
 import ir.codeyad.bookstore.models.User;
 import ir.codeyad.bookstore.repository.UserRepository;
+import ir.codeyad.bookstore.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
